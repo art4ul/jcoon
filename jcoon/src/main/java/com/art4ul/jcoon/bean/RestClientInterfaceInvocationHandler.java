@@ -70,9 +70,13 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
         HttpEntity httpEntity = context.createHttpEntity();
 
+        Class<?> returnType = null;
+        if (!method.getReturnType().equals(Void.TYPE)) {
+            returnType = method.getReturnType();
+        }
 
-        ResponseEntity responseEntity = context.getRestTemplate().exchange(uri, context.getHttpMethod(), httpEntity,
-                method.getReturnType());
+        ResponseEntity responseEntity = context.getRestTemplate().exchange(uri, context.getHttpMethod(),
+                httpEntity, returnType);
 
         context.setResponseEntity(responseEntity);
 
