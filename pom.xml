@@ -15,7 +15,7 @@
   -->
 
 <project>
-    <name>jCoon project</name>
+    <name>jCoon Project</name>
     <url>http://www.jcoon.art4ul.com/</url>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.art4ul</groupId>
@@ -74,29 +74,29 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.9</version>
                 <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>copy</id>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>copy</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
+                <!--<execution>-->
+                <!--<id>copy</id>-->
+                <!--<phase>package</phase>-->
+                <!--<goals>-->
+                <!--<goal>copy</goal>-->
+                <!--</goals>-->
+                <!--<configuration>-->
 
-                            <!--<artifactItems>-->
-                                <!--<artifactItem>-->
-                                    <!--<groupId>com.art4ul</groupId>-->
-                                    <!--<artifactId>jcoon</artifactId>-->
+                <!--<artifactItems>-->
+                <!--<artifactItem>-->
+                <!--<groupId>com.art4ul</groupId>-->
+                <!--<artifactId>jcoon</artifactId>-->
 
-                                    <!--<type>jar</type>-->
-                                    <!--<overWrite>true</overWrite>-->
-                                <!--</artifactItem>-->
+                <!--<type>jar</type>-->
+                <!--<overWrite>true</overWrite>-->
+                <!--</artifactItem>-->
 
-                            <!--</artifactItems>-->
-                            <!--<outputDirectory>${basedir}/build</outputDirectory>-->
-                            <!--<overWriteReleases>true</overWriteReleases>-->
-                            <!--<overWriteSnapshots>true</overWriteSnapshots>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
+                <!--</artifactItems>-->
+                <!--<outputDirectory>${basedir}/build</outputDirectory>-->
+                <!--<overWriteReleases>true</overWriteReleases>-->
+                <!--<overWriteSnapshots>true</overWriteSnapshots>-->
+                <!--</configuration>-->
+                <!--</execution>-->
                 <!--</executions>-->
             </plugin>
 
