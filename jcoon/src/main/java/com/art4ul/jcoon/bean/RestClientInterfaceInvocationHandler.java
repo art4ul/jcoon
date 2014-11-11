@@ -19,6 +19,7 @@ package com.art4ul.jcoon.bean;
 import com.art4ul.jcoon.annotations.BaseUrl;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.context.RestClientContext;
+import com.art4ul.jcoon.exception.RestClientCommonException;
 import com.art4ul.jcoon.handlers.AnnotationProcessor;
 import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.http.HttpEntity;
@@ -81,11 +82,11 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
     private String retrieveBaseUrl(Context context) {
         if (context.getParams().length != 1) {
-            throw new RuntimeException("@BaseUrl method should have only one argument.");
+            throw new RestClientCommonException("@BaseUrl method should have only one argument.");
         }
         Class<?> argumentClass = context.getMethod().getParameterTypes()[0];
         if (!argumentClass.equals(String.class)) {
-            throw new RuntimeException("@BaseUrl method argument should be String type only.");
+            throw new RestClientCommonException("@BaseUrl method argument should be String type only.");
         }
         return context.getParams()[0].toString();
     }
