@@ -44,14 +44,20 @@ public class AnnotationProcessor {
         }
     }
 
-    public static void process(Context context, Annotation annotation) {
-        process(context, annotation, null);
-    }
-
-    public static void process(Context context, Annotation annotation, Object paramValue) {
+    private static void process(Context context, Annotation annotation, Object paramValue) {
         ParamAnnotationHandler annotationHandler = PARAM_ANNOTATION_HANDLER_MAP.get(annotation.annotationType());
         if (annotationHandler != null) {
             annotationHandler.doHandle(context, annotation, paramValue);
+        }
+    }
+
+    public static void processAnnotations(Context context, Annotation[] annotations) {
+        processAnnotations(context, annotations, null);
+    }
+
+    public static void processAnnotations(Context context, Annotation[] annotations, Object paramValue) {
+        for (Annotation annotation : annotations) {
+            AnnotationProcessor.process(context, annotation, paramValue);
         }
     }
 }

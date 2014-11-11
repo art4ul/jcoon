@@ -91,8 +91,12 @@ public class RestClientContext implements Context {
     @Override
     public Context addUrlPath(String urlPath) {
         if (urlPath != null) {
+            if (!urlPath.startsWith("/")) {
+                urlPath = "/" + urlPath;
+            }
             this.urlPath += urlPath;
         }
+
         return this;
     }
 
@@ -128,7 +132,8 @@ public class RestClientContext implements Context {
         if (baseUrl == null) {
             throw new RuntimeException("@BaseUrl is not set.");
         }
-        UriComponentsBuilder componentsBuilder = UriComponentsBuilder.fromUriString(baseUrl + urlPath);
+        UriComponentsBuilder componentsBuilder = UriComponentsBuilder
+                .fromUriString(baseUrl + urlPath);
 
         if (httpParams != null) {
             //if (httpMethod == HttpMethod.GET) {

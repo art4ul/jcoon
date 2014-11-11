@@ -20,24 +20,20 @@ import com.art4ul.jcoon.annotations.BaseUrl;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.context.RestClientContext;
 import com.art4ul.jcoon.handlers.AnnotationProcessor;
+import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.URI;
 
 class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
     private Class<?> originalClass;
-
     private String baseUrl;
-
-
     private final RestTemplate restTemplate;
-
 
     public RestClientInterfaceInvocationHandler(Class<?> originalClass, String baseUrl, RestTemplate restTemplate) {
         this.originalClass = originalClass;
@@ -50,28 +46,21 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
         Context context = new RestClientContext(object, method, params, restTemplate);
 
         if (method.isAnnotationPresent(BaseUrl.class)) {
-            updateBaseUrl(context);
+            baseUrl = retrieveBaseUrl(context);
             return null;
         }
         context.setBaseUrl(baseUrl);
 
         // Process method annotations
-        for (Annotation classAnnotation : originalClass.getAnnotations()) {
-            AnnotationProcessor.process(context, classAnnotation);
-        }
-
+        AnnotationProcessor.processAnnotations(context, originalClass.getAnnotations());
         // Process method annotations
-        for (Annotation methodAnnotation : method.getAnnotations()) {
-            AnnotationProcessor.process(context, methodAnnotation);
-        }
+        AnnotationProcessor.processAnnotations(context, method.getAnnotations());
 
         // Process method params
         for (int i = 0; i < params.length; i++) {
             Annotation[] annotations = method.getParameterAnnotations()[i];
             Object paramValue = params[i];
-            for (Annotation annotation : annotations) {
-                AnnotationProcessor.process(context, annotation, paramValue);
-            }
+            AnnotationProcessor.processAnnotations(context, annotations, paramValue);
         }
 
         URI uri = context.buildUri();
@@ -90,7 +79,7 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
         return responseEntity.getBody();
     }
 
-    private void updateBaseUrl(Context context) {
+    private String retrieveBaseUrl(Context context) {
         if (context.getParams().length != 1) {
             throw new RuntimeException("@BaseUrl method should have only one argument.");
         }
@@ -98,7 +87,7 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
         if (!argumentClass.equals(String.class)) {
             throw new RuntimeException("@BaseUrl method argument should be String type only.");
         }
-        baseUrl = context.getParams()[0].toString();
+        return context.getParams()[0].toString();
     }
 
 }

@@ -19,11 +19,11 @@ package com.art4ul.jcoon.bean;
 import com.art4ul.jcoon.annotations.RestClient;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.cglib.proxy.Proxy;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 
 public class RestClientAnnotationBeanPostProcessor implements BeanPostProcessor {
 
