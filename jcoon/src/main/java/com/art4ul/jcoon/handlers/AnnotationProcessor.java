@@ -18,6 +18,7 @@ package com.art4ul.jcoon.handlers;
 
 import com.art4ul.jcoon.annotations.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
+import com.art4ul.jcoon.exception.InitializationException;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
@@ -38,7 +39,7 @@ public class AnnotationProcessor {
                 try {
                     PARAM_ANNOTATION_HANDLER_MAP.put(annotationHandler.value(), handlerClass.newInstance());
                 } catch (Exception e) {
-                    throw new RuntimeException("Exception during creating new instance of ParamAnnotationHandler");
+                    throw new InitializationException("Exception during creating new instance of ParamAnnotationHandler");
                 }
             }
         }

@@ -19,18 +19,23 @@ package com.art4ul.jcoon.handlers;
 import com.art4ul.jcoon.annotations.HttpErrorHandler;
 import com.art4ul.jcoon.annotations.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.lang.annotation.Annotation;
 
 @ProcessAnnotation(HttpErrorHandler.class)
 public class HttpErrorHandlerAnnotationHandler implements ParamAnnotationHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HttpErrorHandlerAnnotationHandler.class);
+
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
         if (paramValue instanceof ResponseErrorHandler) {
             context.getRestTemplate().setErrorHandler((ResponseErrorHandler) paramValue);
         } else {
-            System.out.println("Warning: Annotated @HttpErrorHandler input parameter must be inherited from ResponseErrorHandler");
+            LOG.warn("Warning: Annotated @HttpErrorHandler input parameter must be inherited from ResponseErrorHandler");
         }
     }
 }

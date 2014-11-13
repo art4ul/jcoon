@@ -16,6 +16,7 @@
 
 package com.art4ul.jcoon.context;
 
+import com.art4ul.jcoon.exception.InitializationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RestClientContext implements Context {
+
 
     private Object object;
     private Method method;
@@ -130,7 +132,7 @@ public class RestClientContext implements Context {
     @Override
     public URI buildUri() {
         if (baseUrl == null) {
-            throw new RuntimeException("@BaseUrl is not set.");
+            throw new InitializationException("@BaseUrl is not set.");
         }
         UriComponentsBuilder componentsBuilder = UriComponentsBuilder
                 .fromUriString(baseUrl + urlPath);

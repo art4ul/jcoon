@@ -19,8 +19,10 @@ package com.art4ul.jcoon.bean;
 import com.art4ul.jcoon.annotations.BaseUrl;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.context.RestClientContext;
-import com.art4ul.jcoon.exception.RestClientCommonException;
+import com.art4ul.jcoon.exception.InitializationException;
 import com.art4ul.jcoon.handlers.AnnotationProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ import java.lang.reflect.Method;
 import java.net.URI;
 
 class RestClientInterfaceInvocationHandler implements InvocationHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RestClientInterfaceInvocationHandler.class);
 
     private Class<?> originalClass;
     private String baseUrl;
@@ -44,6 +48,8 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object object, Method method, Object[] params) throws Throwable {
+        LOG.trace("invoke(method = [{}], params = [{}])", new Object[]{method.getName(), params});
+
         Context context = new RestClientContext(object, method, params, restTemplate);
 
         if (method.isAnnotationPresent(BaseUrl.class)) {
@@ -66,7 +72,7 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
         URI uri = context.buildUri();
 
-        System.out.println("URI=" + uri.toString());
+        LOG.debug("URI= {}", uri.toString());
 
         HttpEntity httpEntity = context.createHttpEntity();
 
@@ -80,17 +86,17 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
 
         context.setResponseEntity(responseEntity);
 
-        System.out.println("responseEntity=" + responseEntity.getBody());
+        LOG.debug("responseEntity= {}", responseEntity.getBody());
         return responseEntity.getBody();
     }
 
     private String retrieveBaseUrl(Context context) {
         if (context.getParams().length != 1) {
-            throw new RestClientCommonException("@BaseUrl method should have only one argument.");
+            throw new InitializationException("@BaseUrl method should have only one argument.");
         }
         Class<?> argumentClass = context.getMethod().getParameterTypes()[0];
         if (!argumentClass.equals(String.class)) {
-            throw new RestClientCommonException("@BaseUrl method argument should be String type only.");
+            throw new InitializationException("@BaseUrl method argument should be String type only.");
         }
         return context.getParams()[0].toString();
     }
