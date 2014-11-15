@@ -32,7 +32,7 @@ or if you want use custom RestTemplate with message converter:
     </bean>
 ```
 2. Create interface and discribe methods using Spring Web annotations like: @RequestMapping,@RequestParam, @RequestBody etc.
-
+``` java
     @RequestMapping("example1")
     public interface ExampleRestClient {
         @BaseUrl
@@ -42,9 +42,9 @@ or if you want use custom RestTemplate with message converter:
         ResultModel exampleGetRequest(@RequestParam("name") String name);
 
     }
-
+```
 3. And use it in your code:
-
+``` java
     @Service
     public class TestService {
 
@@ -58,5 +58,6 @@ or if you want use custom RestTemplate with message converter:
             ResultModel result = restClient.exampleGetRequest("world");
         }
     }
+```
 
 For more information download [sample project](https://github.com/art4ul/jcoon/tree/master/samples)
