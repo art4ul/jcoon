@@ -19,6 +19,8 @@ package com.art4ul.jcoonsample.server;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -31,6 +33,7 @@ import java.io.IOException;
  */
 public class ServerLauncher {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ServerLauncher.class);
     private static final int DEFAULT_PORT = 8080;
     private static final String CONTEXT_PATH = "/";
     private static final String CONFIG_LOCATION = "com.art4ul.jcoonsample.server.config";
