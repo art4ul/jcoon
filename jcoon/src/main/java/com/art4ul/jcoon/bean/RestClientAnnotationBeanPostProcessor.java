@@ -20,17 +20,28 @@ import com.art4ul.jcoon.annotations.RestClient;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Proxy;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class RestClientAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     private final RestTemplate restTemplate;
 
+    public RestClientAnnotationBeanPostProcessor() {
+        this.restTemplate = new RestTemplate();
+    }
+
     public RestClientAnnotationBeanPostProcessor(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    public RestClientAnnotationBeanPostProcessor(List<HttpMessageConverter<?>> messageConverters) {
+        this.restTemplate = new RestTemplate();
+        restTemplate.setMessageConverters(messageConverters);
     }
 
     @Override
