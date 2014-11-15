@@ -38,17 +38,29 @@ public class TestService {
 
     public void doTest() {
 
-        LOG.info("Send GET request ");
-        ResultModel result = restClient.simpleGetRequestTest("http://localhost:8080", "world");
-        LOG.info("simpleGetRequestTest return: {}", result);
-
-        LOG.info("Send POST request ");
-        UserModel userModel = new UserModel("Tester", "sam", "123456");
-        result = restClient.simplePostRequestTest("http://localhost:9090", userModel);
-        LOG.info("simpleGetRequestTest return: {}", result);
-
-
         restClient.setBaseUrl("http://localhost:8080");
+
+        LOG.info("Example #1: Send GET request");
+        ResultModel result = restClient.exampleGetRequest("world");
+        LOG.info("simpleGetRequestTest return: {} \n", result.getResult());
+
+
+        LOG.info("Example #2: Send POST request with custom base URL");
+        UserModel userModel = new UserModel("Tester", "sam", "123456");
+        result = restClient.examplePostRequest("http://localhost:8080", userModel);
+        LOG.info("simpleGetRequestTest return: {} \n", result.getResult());
+
+
+        LOG.info("Example #3: Send POST request with custom HTTP header");
+        result = restClient.examplePostRequestWithHeader(userModel, "test value");
+        LOG.info("simpleGetRequestTest return: {} \n", result.getResult());
+
+        LOG.info("Example #4: Send Get request with path variable");
+        result = restClient.exampleGetRequestWithPathVariable("test");
+        LOG.info("simpleGetRequestTest return: {} \n", result.getResult());
+
+
+
 
     }
 }

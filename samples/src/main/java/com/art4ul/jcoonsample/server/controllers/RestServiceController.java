@@ -28,24 +28,41 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/example1")
-public class MainController {
+public class RestServiceController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestServiceController.class);
 
-    @RequestMapping(value = "/simpleGet", method = RequestMethod.GET)
+    @RequestMapping(value = "/exampleGet", method = RequestMethod.GET)
     @ResponseBody
-    public ResultModel simpleGetRequestTest(@RequestParam("name") String name) {
+    public ResultModel exampleGetRequest(@RequestParam("name") String name) {
         LOG.info("simpleGetRequestTest(name = [{}])", name);
         // some business logic
         return new ResultModel("hello " + name, "simpleGetRequestTest method");
     }
 
 
-    @RequestMapping(value = "/simplePost", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/examplePost", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResultModel simplePostRequestTest(@RequestBody UserModel user) {
+    public ResultModel examplePostRequest(@RequestBody UserModel user) {
         LOG.info("simplePostRequestTest(user = [{}])", user);
         // some business logic
         return new ResultModel("User with login " + user.getLogin() + " is created.", "simplePostRequestTest method");
+    }
+
+    @RequestMapping(value = "/examplePostWithHeader", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultModel examplePostRequestWithHeader(@RequestBody UserModel user, @RequestHeader("myHeader") String header) {
+        LOG.info("simplePostRequestWithHeaderTest(user = [{}], header = [{}])", new Object[]{user, header});
+        // some business logic
+        return new ResultModel("Received header value is : " + header, "simplePostRequestWithHeaderTest method");
+    }
+
+
+    @RequestMapping(value = "/{userId}/examplePostWithPathVariable", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultModel exampleGetRequestWithPathVariable(@PathVariable("userId") String userId) {
+        LOG.info("simpleGetWithPathVariable(userId = [{}])", userId);
+        // some business logic
+        return new ResultModel("Received userId is : " + userId, "simpleGetWithPathVariable method");
     }
 }

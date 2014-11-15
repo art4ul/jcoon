@@ -34,6 +34,7 @@ import java.io.IOException;
 public class ServerLauncher {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerLauncher.class);
+
     private static final int DEFAULT_PORT = 8080;
     private static final String CONTEXT_PATH = "/";
     private static final String CONFIG_LOCATION = "com.art4ul.jcoonsample.server.config";
@@ -42,6 +43,7 @@ public class ServerLauncher {
 
 
     public void startServer() throws Exception {
+        LOG.info("Starting HTTP Server...");
         startServer(getContext());
     }
 
@@ -49,11 +51,15 @@ public class ServerLauncher {
         server = new Server(DEFAULT_PORT);
         server.setHandler(getServletContextHandler(applicationContext));
         server.start();
+        LOG.info("HTTP Server has started.");
+        LOG.info("............................................");
     }
 
     public void stopServer() throws Exception {
         if (server != null) {
             server.stop();
+            LOG.info("............................................");
+            LOG.info("HTTP Server has stopped.");
         }
     }
 

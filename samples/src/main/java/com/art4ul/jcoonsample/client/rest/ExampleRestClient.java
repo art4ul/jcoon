@@ -19,10 +19,7 @@ package com.art4ul.jcoonsample.client.rest;
 import com.art4ul.jcoon.annotations.BaseUrl;
 import com.art4ul.jcoonsample.models.ResultModel;
 import com.art4ul.jcoonsample.models.UserModel;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by artsemsemianenka on 10/15/14.
@@ -33,18 +30,19 @@ public interface ExampleRestClient {
     @BaseUrl
     void setBaseUrl(String url);
 
-    @RequestMapping(value = "/simpleGet", method = RequestMethod.GET)
-    ResultModel simpleGetRequestTest(@RequestParam("name") String name);
+    @RequestMapping(value = "/exampleGet", method = RequestMethod.GET)
+    ResultModel exampleGetRequest(@RequestParam("name") String name);
 
-    @RequestMapping(value = "/simplePost", method = RequestMethod.POST)
-    ResultModel simplePostRequestTest(@RequestBody UserModel user);
+    @RequestMapping(value = "/examplePost", method = RequestMethod.POST)
+    ResultModel examplePostRequest(@RequestBody UserModel user);
 
-    //
+    @RequestMapping(value = "/examplePost", method = RequestMethod.POST)
+    ResultModel examplePostRequest(@BaseUrl String baseUrl, @RequestBody UserModel user);
 
-    @RequestMapping(value = "/simpleGet", method = RequestMethod.GET)
-    ResultModel simpleGetRequestTest(@BaseUrl String baseUrl, @RequestParam("name") String name);
+    @RequestMapping(value = "/examplePostWithHeader", method = RequestMethod.POST)
+    ResultModel examplePostRequestWithHeader(@RequestBody UserModel user, @RequestHeader("myHeader") String header);
 
-    @RequestMapping(value = "/simplePost", method = RequestMethod.POST)
-    ResultModel simplePostRequestTest(@BaseUrl String baseUrl, @RequestBody UserModel user);
+    @RequestMapping(value = "/{userId}/examplePostWithPathVariable", method = RequestMethod.GET)
+    ResultModel exampleGetRequestWithPathVariable(@PathVariable("userId") String userId);
 
 }
