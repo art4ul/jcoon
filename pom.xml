@@ -18,7 +18,7 @@
     <name>jCoon Project</name>
     <url>http://www.jcoon.art4ul.com/</url>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.art4ul</groupId>
+    <groupId>com.art4ul.jcoon</groupId>
     <version>1.0</version>
     <artifactId>jcoon-project-group</artifactId>
     <packaging>pom</packaging>
@@ -46,6 +46,7 @@
 
     <modules>
         <module>jcoon</module>
+        <module>samples</module>
     </modules>
     <build>
 
