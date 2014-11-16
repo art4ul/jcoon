@@ -1,14 +1,14 @@
 jCoon
 =====
 
-Simple REST client for Java based on interfaces
+Simple interface oriented REST client for Spring Framework
 
 
 [![Build Status](https://travis-ci.org/art4ul/jcoon.svg?branch=master)](https://travis-ci.org/art4ul/jcoon)
 
 Summary
 -------
-This library is created to simplify the process of creating REST client in Java. Instead writing a large amount of identical code you should just create java interface and add a few annotations.
+This library is created to simplify the process of creating REST client in Spring Framework. Instead writing a large amount of identical code you should just create java interface and add a few annotations.
 
 Example
 -------
