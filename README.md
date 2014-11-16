@@ -19,7 +19,7 @@ To create Rest client you need to perform only 3 steps:
 ```xml
     <bean class="com.art4ul.jcoon.bean.RestClientAnnotationBeanPostProcessor"/>
 ```
-or if you want use custom RestTemplate with message converter:
+...* or if you want use custom RestTemplate with message converter:
 ```xml
     <bean id="jsonMarshaller" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
 
