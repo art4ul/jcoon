@@ -19,7 +19,7 @@ To create Rest client you need to perform only 3 steps:
 ```xml
     <bean class="com.art4ul.jcoon.bean.RestClientAnnotationBeanPostProcessor"/>
 ```
-...* or if you want use custom RestTemplate with message converter:
+    or if you want use custom RestTemplate with message converter:
 ```xml
     <bean id="jsonMarshaller" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
 
@@ -31,7 +31,9 @@ To create Rest client you need to perform only 3 steps:
          <constructor-arg index="0" ref="restTemplate"/>
     </bean>
 ```
+
 2. Create interface and discribe methods using Spring Web annotations like: @RequestMapping,@RequestParam, @RequestBody etc.
+
 ``` java
     @RequestMapping("example1")
     public interface ExampleRestClient {
@@ -43,7 +45,9 @@ To create Rest client you need to perform only 3 steps:
 
     }
 ```
+
 3. And use it in your code:
+
 ``` java
     @Service
     public class TestService {
