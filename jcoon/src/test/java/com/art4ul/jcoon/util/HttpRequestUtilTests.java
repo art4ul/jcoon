@@ -23,9 +23,12 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,7 +51,7 @@ public class HttpRequestUtilTests {
     }
 
     @Test
-    public void addHeaders() {
+    public void addHeadersTest() {
         Context mockContext = mock(RestClientContext.class);
         when(mockContext.getHttpHeaders()).thenReturn(new HttpHeaders());
         HttpRequestUtil.addHeaders(mockContext, new String[]{"key1=value1;key2=value2", "key3=value3"});
@@ -57,5 +60,14 @@ public class HttpRequestUtilTests {
         Assert.assertEquals("value2", mockContext.getHttpHeaders().get("key2").get(0));
     }
 
+    @Test
+    public void getAcceptedTypesTest() {
+        String[] array = new String[]{"value1", "value2", "value3", "value4"};
+        List<MediaType> mediaTypes = HttpRequestUtil.getAcceptedTypes(array);
+        Assert.assertEquals(4, mediaTypes.size());
 
+        Assert.assertEquals("getAcceptedTypes method should return empty list in case of input parameter is NULL",
+                0, HttpRequestUtil.getAcceptedTypes(null).size());
+
+    }
 }

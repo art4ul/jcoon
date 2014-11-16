@@ -18,7 +18,10 @@ package com.art4ul.jcoon.util;
 
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.exception.ContextException;
+import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,5 +46,16 @@ public class HttpRequestUtil {
                 }
             }
         }
+    }
+
+    public static List<MediaType> getAcceptedTypes(String[] types) {
+        List<MediaType> result = new ArrayList<MediaType>();
+        if (types == null) {
+            return result;
+        }
+        for (String type : types) {
+            result.add(new MediaType(type));
+        }
+        return result;
     }
 }
