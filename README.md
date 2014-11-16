@@ -34,7 +34,7 @@ To create Rest client you need to perform only 3 steps:
     </bean>
     ```
 
-2. Create interface and discribe methods using Spring Web annotations like: @RequestMapping,@RequestParam, @RequestBody etc.
+2. Create interface and discribe methods using Spring Web annotations like: ```java @RequestMapping, @RequestParam, @RequestBody ``` etc.
 
     ``` java
     @RequestMapping("example1")
