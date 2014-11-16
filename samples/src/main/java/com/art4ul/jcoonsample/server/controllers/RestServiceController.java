@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Artsem_Semianenka on 11/14/2014.
  */
 @Controller
-@RequestMapping("/example1")
+@RequestMapping(value = "/example1")
 public class RestServiceController {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestServiceController.class);
@@ -41,7 +41,7 @@ public class RestServiceController {
     }
 
 
-    @RequestMapping(value = "/examplePost", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/examplePost", method = RequestMethod.POST)
     @ResponseBody
     public ResultModel examplePostRequest(@RequestBody UserModel user) {
         LOG.info("simplePostRequestTest(user = [{}])", user);
@@ -64,5 +64,12 @@ public class RestServiceController {
         LOG.info("simpleGetWithPathVariable(userId = [{}])", userId);
         // some business logic
         return new ResultModel("Received userId is : " + userId, "simpleGetWithPathVariable method");
+    }
+
+    @RequestMapping(value = "/exampleException", method = RequestMethod.GET)
+    public ResultModel exampleException(@RequestParam("name") String name) {
+        LOG.info("simpleGetRequestTest(name = [{}])", name);
+        // some business logic
+        throw new RuntimeException();
     }
 }

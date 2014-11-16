@@ -17,14 +17,16 @@
 package com.art4ul.jcoonsample.client.rest;
 
 import com.art4ul.jcoon.annotations.BaseUrl;
+import com.art4ul.jcoon.annotations.HttpErrorHandler;
 import com.art4ul.jcoonsample.models.ResultModel;
 import com.art4ul.jcoonsample.models.UserModel;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.ResponseErrorHandler;
 
 /**
  * Created by artsemsemianenka on 10/15/14.
  */
-@RequestMapping("example1")
+@RequestMapping(value = "example1", headers = "Header2 = value2")
 public interface ExampleRestClient {
 
     @BaseUrl
@@ -39,10 +41,12 @@ public interface ExampleRestClient {
     @RequestMapping(value = "/examplePost", method = RequestMethod.POST)
     ResultModel examplePostRequest(@BaseUrl String baseUrl, @RequestBody UserModel user);
 
-    @RequestMapping(value = "/examplePostWithHeader", method = RequestMethod.POST)
+    @RequestMapping(value = "/examplePostWithHeader", method = RequestMethod.POST, headers = "Header2 = value2")
     ResultModel examplePostRequestWithHeader(@RequestBody UserModel user, @RequestHeader("myHeader") String header);
 
     @RequestMapping(value = "/{userId}/examplePostWithPathVariable", method = RequestMethod.GET)
     ResultModel exampleGetRequestWithPathVariable(@PathVariable("userId") String userId);
 
+    @RequestMapping(value = "/exampleException", method = RequestMethod.GET)
+    ResultModel exampleException(@RequestParam("name") String name, @HttpErrorHandler ResponseErrorHandler errorHandler);
 }

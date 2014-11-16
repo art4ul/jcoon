@@ -17,12 +17,17 @@
 package com.art4ul.jcoonsample.client.service;
 
 import com.art4ul.jcoon.annotations.RestClient;
+import com.art4ul.jcoonsample.client.exception.CustomException;
 import com.art4ul.jcoonsample.client.rest.ExampleRestClient;
 import com.art4ul.jcoonsample.models.ResultModel;
 import com.art4ul.jcoonsample.models.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResponseErrorHandler;
+
+import java.io.IOException;
 
 /**
  * Created by Artsem_Semianenka on 11/14/2014.
@@ -59,8 +64,22 @@ public class TestService {
         result = restClient.exampleGetRequestWithPathVariable("test");
         LOG.info("simpleGetRequestTest return: {} \n", result.getResult());
 
+        LOG.info("Example #5: Handle HTTP exception");
+        ResponseErrorHandler responseErrorHandler = new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse response) throws IOException {
+                return true;
+            }
 
-
-
+            @Override
+            public void handleError(ClientHttpResponse response) throws IOException {
+                throw new CustomException("HTTP code: " + response.getStatusCode() + " text: " + response.getStatusText());
+            }
+        };
+        try {
+            result = restClient.exampleException("test", responseErrorHandler);
+        } catch (CustomException ex) {
+            LOG.info("Exception: " + ex.getMessage());
+        }
     }
 }
