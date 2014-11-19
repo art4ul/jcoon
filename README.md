@@ -66,4 +66,4 @@ To create Rest client you need to perform only 3 steps:
     }
     ```
 
-For more information download [sample project](https://github.com/art4ul/jcoon/tree/master/samples)
+For more information download [example project](https://github.com/art4ul/jcoon-example)
