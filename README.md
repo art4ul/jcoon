@@ -10,6 +10,27 @@ Summary
 -------
 This library is created to simplify the process of creating REST client in Spring Framework. Instead writing a large amount of identical code you should just create java interface and add a few annotations.
 
+Maven repository
+-------
+Add repository and dependency to pom.xml :
+```xml
+<repositories>
+     <repository>
+         <id>oss-sonatype-staging</id>
+         <name>sonatype</name>
+         <url>https://oss.sonatype.org/content/groups/staging</url>
+     </repository>
+</repositories>
+```
+...
+```xml
+<dependency>
+    <groupId>com.art4ul</groupId>
+    <artifactId>jcoon</artifactId>
+    <version>0.2.1-SNAPSHOT</version>
+</dependency>
+```
+
 Example
 -------
 To create Rest client you need to perform only 3 steps:
