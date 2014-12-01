@@ -1,18 +1,12 @@
 jCoon
 =====
-
-Simple interface oriented REST client for Spring Framework
-
-
+This library is created to simplify the process of creating REST client in Spring Framework. Instead writing a large amount of identical code you should just create java interface and add a few annotations.
 [![Build Status](https://travis-ci.org/art4ul/jcoon.svg?branch=master)](https://travis-ci.org/art4ul/jcoon)
 
-Summary
--------
-This library is created to simplify the process of creating REST client in Spring Framework. Instead writing a large amount of identical code you should just create java interface and add a few annotations.
 
 Maven repository
 -------
-Add repository and dependency to pom.xml :
+Add maven repository :
 ```xml
 <repositories>
      <repository>
@@ -22,7 +16,7 @@ Add repository and dependency to pom.xml :
      </repository>
 </repositories>
 ```
-...
+and dependency to pom.xml:
 ```xml
 <dependency>
     <groupId>com.art4ul</groupId>
