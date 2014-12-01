@@ -59,15 +59,15 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
         context.setBaseUrl(baseUrl);
 
         // Process method annotations
-        AnnotationProcessor.processAnnotations(context, originalClass.getAnnotations());
+        AnnotationProcessor.getInstance().processAnnotations(context, originalClass.getAnnotations());
         // Process method annotations
-        AnnotationProcessor.processAnnotations(context, method.getAnnotations());
+        AnnotationProcessor.getInstance().processAnnotations(context, method.getAnnotations());
 
         // Process method params
         for (int i = 0; i < params.length; i++) {
             Annotation[] annotations = method.getParameterAnnotations()[i];
             Object paramValue = params[i];
-            AnnotationProcessor.processAnnotations(context, annotations, paramValue);
+            AnnotationProcessor.getInstance().processAnnotations(context, annotations, paramValue);
         }
 
         URI uri = context.buildUri();

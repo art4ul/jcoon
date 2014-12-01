@@ -19,7 +19,7 @@ package com.art4ul.jcoon.handlers;
 import com.art4ul.jcoon.annotations.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.exception.InitializationException;
-import org.reflections.Reflections;
+import com.google.common.reflect.ClassPath;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -28,37 +28,55 @@ import java.util.Set;
 
 public class AnnotationProcessor {
 
-    private static final Map<Class<?>, ParamAnnotationHandler> PARAM_ANNOTATION_HANDLER_MAP = new HashMap<Class<?>, ParamAnnotationHandler>();
+    private static class AnnotationProcessorHelper {
+        public static final AnnotationProcessor INSTANCE = new AnnotationProcessor();
+    }
 
-    static {
-        Reflections reflections = new Reflections(AnnotationProcessor.class.getPackage().getName());
-        Set<Class<? extends ParamAnnotationHandler>> classes = reflections.getSubTypesOf(ParamAnnotationHandler.class);
-        for (Class<? extends ParamAnnotationHandler> handlerClass : classes) {
-            ProcessAnnotation annotationHandler = handlerClass.getAnnotation(ProcessAnnotation.class);
-            if (annotationHandler != null) {
-                try {
-                    PARAM_ANNOTATION_HANDLER_MAP.put(annotationHandler.value(), handlerClass.newInstance());
-                } catch (Exception e) {
-                    throw new InitializationException("Exception during creating new instance of ParamAnnotationHandler");
+    private final Map<Class<?>, ParamAnnotationHandler> paramAnnotationHandlerMap = new HashMap<Class<?>, ParamAnnotationHandler>();
+
+
+    private AnnotationProcessor() {
+        try {
+            ClassPath classPath = ClassPath.from(AnnotationProcessor.class.getClassLoader());
+            Set<ClassPath.ClassInfo> classInfo = classPath.getTopLevelClasses(AnnotationProcessor.class.getPackage().getName());
+            for (ClassPath.ClassInfo info : classInfo) {
+                Class<?> clazz = info.load();
+                if (ParamAnnotationHandler.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
+                    Class<? extends ParamAnnotationHandler> handlerClass = (Class<? extends ParamAnnotationHandler>) clazz;
+                    ProcessAnnotation annotationHandler = handlerClass.getAnnotation(ProcessAnnotation.class);
+                    if (annotationHandler != null) {
+                        paramAnnotationHandlerMap.put(annotationHandler.value(), handlerClass.newInstance());
+                    }
                 }
             }
+        } catch (Exception e) {
+            throw new InitializationException("Exception during creating new instance of ParamAnnotationHandler");
         }
     }
 
-    private static void process(Context context, Annotation annotation, Object paramValue) {
-        ParamAnnotationHandler annotationHandler = PARAM_ANNOTATION_HANDLER_MAP.get(annotation.annotationType());
+    public static AnnotationProcessor getInstance() {
+        return AnnotationProcessorHelper.INSTANCE;
+    }
+
+
+    private void process(Context context, Annotation annotation, Object paramValue) {
+        ParamAnnotationHandler annotationHandler = getAnnotationHandler(annotation.annotationType());
         if (annotationHandler != null) {
             annotationHandler.doHandle(context, annotation, paramValue);
         }
     }
 
-    public static void processAnnotations(Context context, Annotation[] annotations) {
+    public void processAnnotations(Context context, Annotation[] annotations) {
         processAnnotations(context, annotations, null);
     }
 
-    public static void processAnnotations(Context context, Annotation[] annotations, Object paramValue) {
+    public void processAnnotations(Context context, Annotation[] annotations, Object paramValue) {
         for (Annotation annotation : annotations) {
-            AnnotationProcessor.process(context, annotation, paramValue);
+            process(context, annotation, paramValue);
         }
+    }
+
+    protected ParamAnnotationHandler getAnnotationHandler(Class<?> clazz) {
+        return paramAnnotationHandlerMap.get(clazz);
     }
 }
