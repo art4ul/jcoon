@@ -16,20 +16,21 @@
 
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.annotation.Annotation;
 
-
-@ProcessAnnotation(RequestHeader.class)
-class RequestHeaderAnnotationHandler implements ParamAnnotationHandler {
+@ProcessAnnotation(PathVariable.class)
+@Before
+class PathVariableAnnotationBeforeHandler implements ParamAnnotationHandler {
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
-        RequestHeader requestHeader = (RequestHeader) annotation;
-        if (requestHeader.value() != null && !requestHeader.value().isEmpty()) {
-            context.getHttpHeaders().add(requestHeader.value(), paramValue.toString());
+        PathVariable pathVariable = (PathVariable) annotation;
+        if (pathVariable.value() != null && !pathVariable.value().isEmpty()) {
+            context.addUriVariable(pathVariable.value(), paramValue.toString());
         }
     }
 }

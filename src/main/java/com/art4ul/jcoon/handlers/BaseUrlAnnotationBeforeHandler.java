@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package com.art4ul.jcoon.annotations;
+package com.art4ul.jcoon.handlers;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.rest.BaseUrl;
+import com.art4ul.jcoon.context.Context;
 
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface RestClient {
+import java.lang.annotation.Annotation;
 
-    String value() default "";
+@ProcessAnnotation(BaseUrl.class)
+@Before
+class BaseUrlAnnotationBeforeHandler implements ParamAnnotationHandler {
+
+    @Override
+    public void doHandle(Context context, Annotation annotation, Object paramValue) {
+        context.setBaseUrl(paramValue.toString());
+    }
 }

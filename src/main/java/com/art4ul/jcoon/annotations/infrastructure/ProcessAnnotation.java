@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.art4ul.jcoon.annotations;
+package com.art4ul.jcoon.annotations.infrastructure;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

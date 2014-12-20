@@ -16,7 +16,9 @@
 
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.infrastructure.After;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.exception.InitializationException;
 import com.google.common.reflect.ClassPath;
@@ -32,7 +34,8 @@ public class AnnotationProcessor {
         public static final AnnotationProcessor INSTANCE = new AnnotationProcessor();
     }
 
-    private final Map<Class<?>, ParamAnnotationHandler> paramAnnotationHandlerMap = new HashMap<Class<?>, ParamAnnotationHandler>();
+    private final Map<Class<?>, ParamAnnotationHandler> paramAnnotationBeforeHandlerMap = new HashMap<Class<?>, ParamAnnotationHandler>();
+    private final Map<Class<?>, ParamAnnotationHandler> paramAnnotationAfterHandlerMap = new HashMap<Class<?>, ParamAnnotationHandler>();
 
 
     private AnnotationProcessor() {
@@ -45,7 +48,11 @@ public class AnnotationProcessor {
                     Class<? extends ParamAnnotationHandler> handlerClass = (Class<? extends ParamAnnotationHandler>) clazz;
                     ProcessAnnotation annotationHandler = handlerClass.getAnnotation(ProcessAnnotation.class);
                     if (annotationHandler != null) {
-                        paramAnnotationHandlerMap.put(annotationHandler.value(), handlerClass.newInstance());
+                        if (handlerClass.isAnnotationPresent(Before.class)) {
+                            paramAnnotationBeforeHandlerMap.put(annotationHandler.value(), handlerClass.newInstance());
+                        } else if (handlerClass.isAnnotationPresent(After.class)) {
+                            paramAnnotationAfterHandlerMap.put(annotationHandler.value(), handlerClass.newInstance());
+                        }
                     }
                 }
             }
@@ -59,24 +66,35 @@ public class AnnotationProcessor {
     }
 
 
-    private void process(Context context, Annotation annotation, Object paramValue) {
-        ParamAnnotationHandler annotationHandler = getAnnotationHandler(annotation.annotationType());
+    private void process(Context context, Annotation annotation, Object paramValue, ParamAnnotationHandler annotationHandler) {
         if (annotationHandler != null) {
             annotationHandler.doHandle(context, annotation, paramValue);
         }
     }
 
-    public void processAnnotations(Context context, Annotation[] annotations) {
-        processAnnotations(context, annotations, null);
+    public void processAnnotationsBefore(Context context, Annotation[] annotations) {
+        processAnnotationsBefore(context, annotations, null);
     }
 
-    public void processAnnotations(Context context, Annotation[] annotations, Object paramValue) {
+    public void processAnnotationsBefore(Context context, Annotation[] annotations, Object paramValue) {
         for (Annotation annotation : annotations) {
-            process(context, annotation, paramValue);
+            ParamAnnotationHandler annotationHandler = getAnnotationBeforeHandler(annotation.annotationType());
+            process(context, annotation, paramValue, annotationHandler);
         }
     }
 
-    protected ParamAnnotationHandler getAnnotationHandler(Class<?> clazz) {
-        return paramAnnotationHandlerMap.get(clazz);
+    public void processAnnotationsAfter(Context context, Annotation[] annotations, Object paramValue) {
+        for (Annotation annotation : annotations) {
+            ParamAnnotationHandler annotationHandler = getAnnotationAfterHandler(annotation.annotationType());
+            process(context, annotation, paramValue, annotationHandler);
+        }
+    }
+
+    protected ParamAnnotationHandler getAnnotationBeforeHandler(Class<?> clazz) {
+        return paramAnnotationBeforeHandlerMap.get(clazz);
+    }
+
+    protected ParamAnnotationHandler getAnnotationAfterHandler(Class<?> clazz) {
+        return paramAnnotationAfterHandlerMap.get(clazz);
     }
 }

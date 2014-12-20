@@ -16,8 +16,8 @@
 
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.BaseUrl;
-import com.art4ul.jcoon.annotations.HttpErrorHandler;
+import com.art4ul.jcoon.annotations.rest.BaseUrl;
+import com.art4ul.jcoon.annotations.rest.HttpErrorHandler;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +31,12 @@ public class AnnotationProcessorTests {
 
     @Test
     public void loadAnnotationHandlerTest() {
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(BaseUrl.class) instanceof BaseUrlAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(HttpErrorHandler.class) instanceof HttpErrorHandlerAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(PathVariable.class) instanceof PathVariableAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(RequestBody.class) instanceof RequestBodyAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(RequestHeader.class) instanceof RequestHeaderAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(RequestMapping.class) instanceof RequestMappingAnnotationHandler);
-        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationHandler(RequestParam.class) instanceof RequestParamAnnotationHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(BaseUrl.class) instanceof BaseUrlAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(HttpErrorHandler.class) instanceof HttpErrorHandlerAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(PathVariable.class) instanceof PathVariableAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(RequestBody.class) instanceof RequestBodyAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(RequestHeader.class) instanceof RequestHeaderAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(RequestMapping.class) instanceof RequestMappingAnnotationBeforeHandler);
+        Assert.assertTrue(AnnotationProcessor.getInstance().getAnnotationBeforeHandler(RequestParam.class) instanceof RequestParamAnnotationBeforeHandler);
     }
 }

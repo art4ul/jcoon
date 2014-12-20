@@ -16,7 +16,7 @@
 
 package com.art4ul.jcoon.bean;
 
-import com.art4ul.jcoon.annotations.RestClient;
+import com.art4ul.jcoon.annotations.rest.RestClient;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Proxy;

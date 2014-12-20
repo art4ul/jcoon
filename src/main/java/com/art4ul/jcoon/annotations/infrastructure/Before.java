@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package com.art4ul.jcoon.handlers;
+package com.art4ul.jcoon.annotations.infrastructure;
 
-import com.art4ul.jcoon.annotations.BaseUrl;
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
-import com.art4ul.jcoon.context.Context;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.Annotation;
+/**
+ * Created by Artsem Semianenka
+ * Website: http://art4ul.com
+ * 12/20/14.
+ */
 
-@ProcessAnnotation(BaseUrl.class)
-class BaseUrlAnnotationHandler implements ParamAnnotationHandler {
-
-    @Override
-    public void doHandle(Context context, Annotation annotation, Object paramValue) {
-        context.setBaseUrl(paramValue.toString());
-    }
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Before {
 }

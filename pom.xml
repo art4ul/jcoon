@@ -20,7 +20,7 @@
     <groupId>com.art4ul</groupId>
     <artifactId>jcoon</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>jCoon REST client</name>
     <description>Simple interface oriented REST client for Spring Framework</description>
 

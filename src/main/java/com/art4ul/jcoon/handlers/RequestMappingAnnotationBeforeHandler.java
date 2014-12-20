@@ -16,7 +16,8 @@
 
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.util.ArrayUtil;
 import com.art4ul.jcoon.util.HttpRequestUtil;
@@ -28,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.lang.annotation.Annotation;
 
 @ProcessAnnotation(RequestMapping.class)
-class RequestMappingAnnotationHandler implements ParamAnnotationHandler {
+@Before
+class RequestMappingAnnotationBeforeHandler implements ParamAnnotationHandler {
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
         RequestMapping requestMapping = (RequestMapping) annotation;

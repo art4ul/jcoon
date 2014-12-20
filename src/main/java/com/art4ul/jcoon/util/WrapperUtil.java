@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package com.art4ul.jcoon.annotations;
+package com.art4ul.jcoon.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.art4ul.jcoon.models.Wrapper;
 
-@Target({ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface HttpErrorHandler {
+/**
+ * Created by Artsem Semianenka
+ * Website: http://art4ul.com
+ * 12/20/14.
+ */
+public final class WrapperUtil {
 
+    private WrapperUtil() {
+    }
 
+    public static Object getWreppedObject(Object obj) {
+        if (obj instanceof Wrapper) {
+            return ((Wrapper) obj).getValue();
+        } else {
+            return obj;
+        }
+    }
 }

@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.rest.HttpErrorHandler;
 import com.art4ul.jcoon.context.Context;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.ResponseErrorHandler;
 
 import java.lang.annotation.Annotation;
 
-@ProcessAnnotation(RequestParam.class)
-class RequestParamAnnotationHandler implements ParamAnnotationHandler {
+@ProcessAnnotation(HttpErrorHandler.class)
+@Before
+public class HttpErrorHandlerAnnotationBeforeHandler implements ParamAnnotationHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HttpErrorHandlerAnnotationBeforeHandler.class);
 
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
-        RequestParam requestParam = (RequestParam) annotation;
-        if (requestParam.value() != null && !requestParam.value().isEmpty()) {
-            context.addHttpParam(requestParam.value(), paramValue);
+        if (paramValue instanceof ResponseErrorHandler) {
+            context.getRestTemplate().setErrorHandler((ResponseErrorHandler) paramValue);
+        } else {
+            LOG.warn("Warning: Annotated @HttpErrorHandler input parameter must be inherited from ResponseErrorHandler");
         }
-
     }
 }

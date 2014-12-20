@@ -16,7 +16,7 @@
 
 package com.art4ul.jcoon.bean;
 
-import com.art4ul.jcoon.annotations.BaseUrl;
+import com.art4ul.jcoon.annotations.rest.BaseUrl;
 import com.art4ul.jcoon.context.Context;
 import com.art4ul.jcoon.context.RestClientContext;
 import com.art4ul.jcoon.exception.InitializationException;
@@ -58,16 +58,19 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
         }
         context.setBaseUrl(baseUrl);
 
+        AnnotationProcessor annotationProcessor = AnnotationProcessor.getInstance();
+
+        // Process class annotations
+        annotationProcessor.processAnnotationsBefore(context, originalClass.getAnnotations());
+
         // Process method annotations
-        AnnotationProcessor.getInstance().processAnnotations(context, originalClass.getAnnotations());
-        // Process method annotations
-        AnnotationProcessor.getInstance().processAnnotations(context, method.getAnnotations());
+        annotationProcessor.processAnnotationsBefore(context, method.getAnnotations());
 
         // Process method params
         for (int i = 0; i < params.length; i++) {
             Annotation[] annotations = method.getParameterAnnotations()[i];
             Object paramValue = params[i];
-            AnnotationProcessor.getInstance().processAnnotations(context, annotations, paramValue);
+            annotationProcessor.processAnnotationsBefore(context, annotations, paramValue);
         }
 
         URI uri = context.buildUri();
@@ -85,6 +88,13 @@ class RestClientInterfaceInvocationHandler implements InvocationHandler {
                 httpEntity, returnType);
 
         context.setResponseEntity(responseEntity);
+
+        // Process method params after invocation
+        for (int i = 0; i < params.length; i++) {
+            Annotation[] annotations = method.getParameterAnnotations()[i];
+            Object paramValue = params[i];
+            annotationProcessor.processAnnotationsAfter(context, annotations, paramValue);
+        }
 
         LOG.debug("responseEntity= {}", responseEntity.getBody());
         return responseEntity.getBody();

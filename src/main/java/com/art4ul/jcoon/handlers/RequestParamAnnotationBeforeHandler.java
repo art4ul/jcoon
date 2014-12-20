@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
+
 package com.art4ul.jcoon.handlers;
 
-import com.art4ul.jcoon.annotations.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.infrastructure.Before;
+import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.annotation.Annotation;
 
-@ProcessAnnotation(RequestBody.class)
-public class RequestBodyAnnotationHandler implements ParamAnnotationHandler {
+@ProcessAnnotation(RequestParam.class)
+@Before
+class RequestParamAnnotationBeforeHandler implements ParamAnnotationHandler {
 
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
-        context.setBody(paramValue);
+        RequestParam requestParam = (RequestParam) annotation;
+        if (requestParam.value() != null && !requestParam.value().isEmpty()) {
+            context.addHttpParam(requestParam.value(), paramValue);
+        }
+
     }
 }
