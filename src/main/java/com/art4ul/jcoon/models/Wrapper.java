@@ -24,6 +24,9 @@ package com.art4ul.jcoon.models;
 public class Wrapper<T> {
     private T value;
 
+    public Wrapper() {
+    }
+
     public Wrapper(T value) {
         this.value = value;
     }
