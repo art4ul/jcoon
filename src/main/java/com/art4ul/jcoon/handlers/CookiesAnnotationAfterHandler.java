@@ -43,12 +43,14 @@ public class CookiesAnnotationAfterHandler implements ParamAnnotationHandler {
             Wrapper wrapper = ((Wrapper) paramValue);
             Object wrappedParam = wrapper.getValue();
             HttpHeaders httpHeaders = context.getResponseEntity().getHeaders();
-            List<String> cookies = httpHeaders.get("Cookie");
-            if (wrappedParam instanceof String) {
-                String resultString = Joiner.on(";").join(cookies);
-                wrapper.setValue(resultString);
-            } else if (wrappedParam instanceof List) {
-                wrapper.setValue(cookies);
+            List<String> cookies = httpHeaders.get("Set-Cookie");
+            if (cookies != null) {
+                if (wrappedParam instanceof String) {
+                    String resultString = Joiner.on(";").join(cookies);
+                    wrapper.setValue(resultString);
+                } else if (wrappedParam instanceof List) {
+                    wrapper.setValue(cookies);
+                }
             }
         }
     }

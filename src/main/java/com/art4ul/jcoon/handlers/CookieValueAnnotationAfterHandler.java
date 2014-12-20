@@ -43,7 +43,7 @@ public class CookieValueAnnotationAfterHandler implements ParamAnnotationHandler
             CookieValue cookieValueAnnotation = (CookieValue) annotation;
 
             HttpHeaders httpHeaders = context.getResponseEntity().getHeaders();
-            List<String> cookies = httpHeaders.get("Cookie");
+            List<String> cookies = httpHeaders.get("Set-Cookie");
             String cookie = getCookieByNameFromList(cookies, cookieValueAnnotation.value());
             wrapper.setValue(cookie);
         }
