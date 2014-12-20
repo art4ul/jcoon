@@ -16,10 +16,18 @@
 
 package com.art4ul.jcoon.annotations.rest;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Created by Artsem Semianenka
  * Website: http://art4ul.com
  * 12/20/14.
  */
-public interface Cookies {
+
+@Target({ElementType.METHOD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Cookies {
 }

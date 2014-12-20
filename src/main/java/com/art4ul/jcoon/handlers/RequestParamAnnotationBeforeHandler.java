@@ -32,7 +32,20 @@ class RequestParamAnnotationBeforeHandler implements ParamAnnotationHandler {
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
         RequestParam requestParam = (RequestParam) annotation;
         if (requestParam.value() != null && !requestParam.value().isEmpty()) {
-            context.addHttpParam(requestParam.value(), paramValue);
+
+            // Check null and set default value
+            String param;
+            if (paramValue == null) {
+                if (requestParam.defaultValue() != null) {
+                    param = requestParam.defaultValue();
+                } else {
+                    param = "";
+                }
+            } else {
+                param = paramValue.toString();
+            }
+
+            context.addHttpParam(requestParam.value(), param);
         }
 
     }
