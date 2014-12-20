@@ -22,7 +22,7 @@ and dependency to pom.xml:
 <dependency>
     <groupId>com.art4ul</groupId>
     <artifactId>jcoon</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
 </dependency>
 ```
 
