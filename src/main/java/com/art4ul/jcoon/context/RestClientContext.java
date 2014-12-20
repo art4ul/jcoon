@@ -21,6 +21,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,7 +38,7 @@ public class RestClientContext implements Context {
     private Method method;
     private Object[] inputParams;
     private Map<String, Object> httpParams;
-
+    private MultiValueMap<String, Object> httpBodyParams;
 
     private String baseUrl;
     private String urlPath = "";
@@ -113,6 +115,15 @@ public class RestClientContext implements Context {
     }
 
     @Override
+    public Context addHttpBodyParam(String key, Object value) {
+        if (httpBodyParams == null) {
+            httpBodyParams = new LinkedMultiValueMap<String, Object>();
+        }
+        httpBodyParams.add(key, value);
+        return this;
+    }
+
+    @Override
     public Context addUriVariable(String key, Object value) {
         uriVariable.put(key, value);
         return this;
@@ -157,7 +168,13 @@ public class RestClientContext implements Context {
     }
 
     public HttpEntity createHttpEntity() {
-        return this.httpEntity = new HttpEntity(body, getHttpHeaders());
+        Object postData;
+        if (body != null) {
+            postData = body;
+        } else {
+            postData = httpBodyParams;
+        }
+        return this.httpEntity = new HttpEntity(postData, getHttpHeaders());
     }
 
     public Context setBody(Object body) {

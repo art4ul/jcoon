@@ -17,7 +17,7 @@
 package com.art4ul.jcoon.util;
 
 import com.art4ul.jcoon.context.Context;
-import com.art4ul.jcoon.exception.ContextException;
+import com.art4ul.jcoon.models.AddingStatagy;
 import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
@@ -27,21 +27,19 @@ import java.util.regex.Pattern;
 
 public class HttpRequestUtil {
 
-    private static final String HEADER_REGEX_PATTERN = "[\\s]*([^=\\s]+)[\\s]*=[\\s]*([^=;\\s]+)[\\s]*[;]*";
+    private static final String KEY_VALUE_REGEX_PATTERN = "[\\s]*([^=\\s]+)[\\s]*=[\\s]*([^=;\\s]+)[\\s]*[;]*";
 
-    public static void addHeaders(Context context, String[] stringArray) {
-        if (context == null) {
-            throw new ContextException("Context is null");
-        }
+    public static void addKeyValueParams(Context context, String[] stringArray, AddingStatagy addingStatagy) {
         if (stringArray != null) {
-            Pattern pattern = Pattern.compile(HEADER_REGEX_PATTERN);
+            Pattern pattern = Pattern.compile(KEY_VALUE_REGEX_PATTERN);
             for (String str : stringArray) {
                 Matcher matcher = pattern.matcher(str);
                 while (matcher.find()) {
                     if (matcher.groupCount() == 2) {
                         String headerName = matcher.group(1);
                         String headerValue = matcher.group(2);
-                        context.getHttpHeaders().add(headerName.trim(), headerValue.trim());
+                        addingStatagy.add(headerName.trim(), headerValue.trim());
+                        //context.getHttpHeaders().add(headerName.trim(), headerValue.trim());
                     }
                 }
             }

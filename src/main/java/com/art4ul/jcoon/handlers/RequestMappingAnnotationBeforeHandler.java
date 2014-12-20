@@ -19,6 +19,8 @@ package com.art4ul.jcoon.handlers;
 import com.art4ul.jcoon.annotations.infrastructure.Before;
 import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
 import com.art4ul.jcoon.context.Context;
+import com.art4ul.jcoon.exception.ContextException;
+import com.art4ul.jcoon.models.AddingStatagy;
 import com.art4ul.jcoon.util.ArrayUtil;
 import com.art4ul.jcoon.util.HttpRequestUtil;
 import org.springframework.http.HttpMethod;
@@ -33,6 +35,9 @@ import java.lang.annotation.Annotation;
 class RequestMappingAnnotationBeforeHandler implements ParamAnnotationHandler {
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
+        if (context == null) {
+            throw new ContextException("Context is null");
+        }
         RequestMapping requestMapping = (RequestMapping) annotation;
         if (requestMapping != null) {
             RequestMethod requestMethod = ArrayUtil.getFirstValue(requestMapping.method());
@@ -48,8 +53,26 @@ class RequestMappingAnnotationBeforeHandler implements ParamAnnotationHandler {
                 context.getHttpHeaders().setAccept(HttpRequestUtil.getAcceptedTypes(requestMapping.produces()));
             }
             context.addUrlPath(ArrayUtil.getFirstValue(requestMapping.value()));
-            HttpRequestUtil.addHeaders(context, requestMapping.headers());
+            addHeaders(context, requestMapping.headers());
+            addParams(context, requestMapping.params());
         }
+    }
 
+    private void addParams(final Context context, String[] stringArray) {
+        HttpRequestUtil.addKeyValueParams(context, stringArray, new AddingStatagy() {
+            @Override
+            public void add(String key, String value) {
+                context.addHttpParam(key, value);
+            }
+        });
+    }
+
+    private void addHeaders(final Context context, String[] stringArray) {
+        HttpRequestUtil.addKeyValueParams(context, stringArray, new AddingStatagy() {
+            @Override
+            public void add(String key, String value) {
+                context.getHttpHeaders().add(key, value);
+            }
+        });
     }
 }

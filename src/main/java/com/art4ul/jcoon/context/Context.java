@@ -37,6 +37,8 @@ public interface Context {
 
     public Context addHttpParam(String key, Object value);
 
+    public Context addHttpBodyParam(String key, Object value);
+
     public URI buildUri();
 
     public Context setBaseUrl(String baseUrl);

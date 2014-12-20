@@ -16,22 +16,14 @@
 
 package com.art4ul.jcoon.util;
 
-import com.art4ul.jcoon.context.Context;
-import com.art4ul.jcoon.context.RestClientContext;
-import com.art4ul.jcoon.exception.ContextException;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 /**
@@ -44,13 +36,8 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = {"/applicationContext.xml"})
 public class HttpRequestUtilTests {
 
-    @Test
-    @ExpectedException(ContextException.class)
-    public void addHeadersNullContextTest() {
-        HttpRequestUtil.addHeaders(null, null);
-    }
 
-    @Test
+    /*@Test
     public void addHeadersTest() {
         Context mockContext = mock(RestClientContext.class);
         when(mockContext.getHttpHeaders()).thenReturn(new HttpHeaders());
@@ -58,7 +45,7 @@ public class HttpRequestUtilTests {
         Assert.assertEquals("addHeaders should return 3 elements of HttpHeaders",
                 3, mockContext.getHttpHeaders().size());
         Assert.assertEquals("value2", mockContext.getHttpHeaders().get("key2").get(0));
-    }
+    }*/
 
     @Test
     public void getAcceptedTypesTest() {

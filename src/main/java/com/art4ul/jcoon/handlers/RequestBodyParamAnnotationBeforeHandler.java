@@ -19,19 +19,19 @@ package com.art4ul.jcoon.handlers;
 
 import com.art4ul.jcoon.annotations.infrastructure.Before;
 import com.art4ul.jcoon.annotations.infrastructure.ProcessAnnotation;
+import com.art4ul.jcoon.annotations.rest.RequestBodyParam;
 import com.art4ul.jcoon.context.Context;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 
 import java.lang.annotation.Annotation;
 
-@ProcessAnnotation(RequestParam.class)
+@ProcessAnnotation(RequestBodyParam.class)
 @Before
-class RequestParamAnnotationBeforeHandler implements ParamAnnotationHandler {
+class RequestBodyParamAnnotationBeforeHandler implements ParamAnnotationHandler {
 
     @Override
     public void doHandle(Context context, Annotation annotation, Object paramValue) {
-        RequestParam requestParam = (RequestParam) annotation;
+        RequestBodyParam requestParam = (RequestBodyParam) annotation;
         if (requestParam.value() != null && !requestParam.value().isEmpty()) {
 
             // Check null and set default value
@@ -45,8 +45,7 @@ class RequestParamAnnotationBeforeHandler implements ParamAnnotationHandler {
             } else {
                 param = paramValue.toString();
             }
-
-            context.addHttpParam(requestParam.value(), param);
+            context.addHttpBodyParam(requestParam.value(), param);
         }
 
     }
